@@ -1,0 +1,31 @@
+<main>
+  <mat-toolbar color="primary">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu" [overlapTrigger]="false">
+      <button mat-menu-item [routerLink]="['/user-info']">
+        <mat-icon>account_circle</mat-icon>
+        <span>Profilo utente</span>
+      </button>
+      <button mat-menu-item [routerLink]="['/qr-reader']">
+        <mat-icon>qr_code_reader</mat-icon>
+        <span>Validazione qrCode</span>
+      </button>
+      <button mat-menu-item (click)="logOut()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <img [src]="imagePath" alt="Logo" class="logo img-fluid" />
+    </div>
+    <h3 class="d-flex justify-content-center">{{user()?.full_name}} ({{user()?.email}})</h3>
+    <h3 class="d-flex justify-content-center">Team -> {{user()?.teams?.name}}</h3>
+  </div>
+
+  <app-next-match></app-next-match>
+</main>

@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="d-flex justify-content-center">
+    <img [src]="imagePath" alt="Logo" class="logo img-fluid" />
+  </div>
+
+  <!-- profile.component.html -->
+  <form
+    [formGroup]="userInfoForm"
+    (ngSubmit)="onSubmit()"
+    class="form-container"
+  >
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nominativo</mat-label>
+      <input matInput formControlName="full_name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Telefono</mat-label>
+      <input matInput formControlName="phone" type="tel" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width" mandatory="true">
+      <mat-label>Team</mat-label>
+      <mat-select formControlName="team">
+        <mat-option *ngFor="let team of teams" [value]="team.id">
+          {{ team.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="justify-content-center button-group">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="onCancel()"
+        [disabled]="userInfoForm.invalid"
+      >
+        Annulla
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="userInfoForm.invalid"
+      >
+        Conferma
+      </button>
+    </div>
+  </form>
+</div>

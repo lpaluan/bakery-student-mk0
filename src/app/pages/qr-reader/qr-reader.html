@@ -1,0 +1,13 @@
+
+<h2>QR Code Reader</h2>
+
+<!-- Live Camera Scanner -->
+ <div class="d-flex justify-content-center">
+    <ngx-scanner-qrcode (event)="onScan($event)"></ngx-scanner-qrcode>
+  </div>
+
+<!-- Display scanned result -->
+<div *ngIf="scannedData">
+  <h3>Scanned Data:</h3>
+  <pre>{{ scannedData | json }}</pre>
+</div>

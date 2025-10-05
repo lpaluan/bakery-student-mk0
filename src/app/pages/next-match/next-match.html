@@ -1,0 +1,11 @@
+<div class="d-flex flex-column align-items-center mt-4">
+  <h3 class="mb-3">Prossima Partita {{ nextMatch()?.opponent}}</h3>
+
+<qrcode
+  [qrdata]="qrData"
+  [width]="200"
+  [errorCorrectionLevel]="'M'">
+</qrcode>
+
+
+</div>

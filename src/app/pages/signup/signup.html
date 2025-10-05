@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="d-flex justify-content-center">
+    <img [src]="imagePath" alt="Logo" class="logo img-fluid" />
+  </div>
+
+  <h2 class="d-flex justify-content-center">Registrazione</h2>
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="form-container">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="tel" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password" />
+    </mat-form-field>
+
+    <div class="justify-content-center button-group">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="onCancel()"
+        [disabled]="signupForm.invalid"
+      >
+        Annulla
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="signupForm.invalid"
+      >
+        Conferma
+      </button>
+    </div>
+  </form>
+
+  <p class="d-flex justify-content-center">
+    <a [routerLink]="['/login']">Ti sei già registrato? vai alla Pagina Iniziale</a>
+  </p>
+</div>
