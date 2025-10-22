@@ -3,7 +3,7 @@
     <img [src]="imagePath" alt="Logo" class="logo img-fluid" />
   </div>
 
-  <!-- profile.component.html -->
+  <h2 class="d-flex justify-content-center">Profilo Utente</h2>
   <form
     [formGroup]="userInfoForm"
     (ngSubmit)="onSubmit()"
@@ -19,6 +19,8 @@
       <input matInput formControlName="phone" type="tel" />
     </mat-form-field>
 
+    @if(!userInfoForm.get('isAdmin')?.value &&
+    !userInfoForm.get('isReader')?.value) {
     <mat-form-field appearance="outline" class="full-width" mandatory="true">
       <mat-label>Team</mat-label>
       <mat-select formControlName="team">
@@ -27,7 +29,8 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-
+    }
+    
     <div class="justify-content-center button-group">
       <button
         mat-raised-button

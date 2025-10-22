@@ -31,7 +31,6 @@ export class AuthService {
 
   get isLoggedIn(): boolean {
     const user = localStorage.getItem('session') as string;
-
     return user === 'undefined' ? false : true;
   }
 
@@ -48,8 +47,11 @@ export class AuthService {
     });
   }
 
-  async signUpWithEmail(payload: SignupPayload) {
-    return await this.supabase.auth.signUp({
+  async signUpWithEmail(payload: SignupPayload, isAdmin?: boolean, isReader?: boolean) {
+    const adminSignup = isAdmin ?? false;
+    const readerSignup = isReader ?? false;
+
+    const authResponse = await this.supabase.auth.signUp({
       email: payload.email,
       password: payload.password,
       options: {
@@ -58,6 +60,16 @@ export class AuthService {
         },
       },
     });
+
+    if (authResponse.error || !authResponse.data.user) {
+      return authResponse;
+    } 
+
+
+    return await this.supabase
+      .from('users')
+      .update({ admin: isAdmin, reader: isReader })
+      .eq('id', authResponse.data.user.id);
   }
 
   async signOut() {
@@ -70,10 +82,10 @@ export class AuthService {
     return data.user.id;
   }
 
-  getUserInfo(id: string) {
-    const data = this.supabase
+  async getUserInfo(id: string) {
+    const data = await this.supabase
       .from('users')
-      .select('id, full_name, phone, team, teams(id, name)')
+      .select('*, teams(id, name)')
       .eq('id', id)
       .single();
     return data;
@@ -85,7 +97,7 @@ export class AuthService {
   }
 
   getTeams() {
-    const data = this.supabase.from('teams').select('*');
+    const data = this.supabase.from('teams').select('*').order('id', { ascending: true });
     return data;
   }
 

@@ -1,8 +1,8 @@
-import id from '@angular/common/locales/id';
 import { Component, effect, inject, signal } from '@angular/core';
 import { MatchService } from '../../services/match-service';
 import { AuthService } from '../../services/auth-service';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-next-match',
@@ -15,6 +15,7 @@ export class NextMatch {
   user = signal<any>(null);
   private match_service = inject(MatchService);
   nextMatch = signal<any>(null);
+  nextMatchDate: string = '';
 
   constructor() {
     effect(async () => {
@@ -26,10 +27,19 @@ export class NextMatch {
     effect(async () => {
       const { data } = await this.match_service.nextMatch();
       this.nextMatch.set(data);
+
+      const datePipe = new DatePipe('it-IT');
+      this.nextMatchDate = datePipe.transform(
+        this.nextMatch().matchdatetime,
+        'd MMMM, y, HH:mm'
+      ) || '';
     });
   }
 
   get qrData(): string {
-    return JSON.stringify({ user: this.user().id, match: this.nextMatch().id });
+    return JSON.stringify({
+      user_id: this.user().id,
+      match_id: this.nextMatch().id,
+    });
   }
 }

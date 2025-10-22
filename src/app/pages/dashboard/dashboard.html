@@ -8,10 +8,12 @@
         <mat-icon>account_circle</mat-icon>
         <span>Profilo utente</span>
       </button>
+      @if(user()?.admin || user()?.reader) {
       <button mat-menu-item [routerLink]="['/qr-reader']">
         <mat-icon>qr_code_reader</mat-icon>
         <span>Validazione qrCode</span>
       </button>
+      }
       <button mat-menu-item (click)="logOut()">
         <mat-icon>exit_to_app</mat-icon>
         <span>Logout</span>
@@ -23,9 +25,16 @@
     <div class="d-flex justify-content-center">
       <img [src]="imagePath" alt="Logo" class="logo img-fluid" />
     </div>
-    <h3 class="d-flex justify-content-center">{{user()?.full_name}} ({{user()?.email}})</h3>
-    <h3 class="d-flex justify-content-center">Team -> {{user()?.teams?.name}}</h3>
+    <h3 class="d-flex justify-content-center">
+      {{user()?.full_name}} ({{user()?.email}})
+    </h3>
   </div>
 
-  <app-next-match></app-next-match>
+  @if (user()?.admin) {
+  <app-matches-query></app-matches-query>
+  } @else if (user()?.reader) {
+  <app-qr-reader></app-qr-reader>
+  } @else if (user()) {
+    <app-next-match></app-next-match>
+  }
 </main>

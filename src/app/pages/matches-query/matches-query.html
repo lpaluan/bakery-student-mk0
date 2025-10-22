@@ -1,0 +1,59 @@
+<div>
+  <mat-form-field style="width: 50vw" appearance="outline">
+    <mat-label>Filtro per Match</mat-label>
+    <mat-select
+      [(value)]="selectedMatch"
+      (selectionChange)="applyMatchFilter()"
+      formControlName="match"
+    >
+      <mat-option *ngFor="let match of matches" [value]="match.id">
+        {{ match.opponent }} - {{ match.matchdatetime | date: "dd/MM/yyyy" }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="exportToCSV()">
+    Export CSV
+  </button>
+</div>
+
+<table
+  mat-table
+  [dataSource]="dataSource"
+  matSort
+  #matchTbSort="matSort"
+  class="mat-elevation-z8 bordered-table"
+>
+  @if(!selectedMatch) {
+  <ng-container matColumnDef="matchdatetime">
+    <th mat-header-cell *matHeaderCellDef>Data Partita</th>
+    <td mat-cell *matCellDef="let element">
+      {{element.matchdatetime | date: "dd/MM/yyyy"}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="opponent">
+    <th mat-header-cell *matHeaderCellDef>Partita</th>
+    <td mat-cell *matCellDef="let element">{{element.opponent}}</td>
+  </ng-container>
+  }
+  <ng-container matColumnDef="full_name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Atleta</th>
+    <td mat-cell *matCellDef="let element">{{element.full_name}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="team">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Team</th>
+    <td mat-cell *matCellDef="let element">{{element.team}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="datereg">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Entrata</th>
+    <td mat-cell *matCellDef="let element">
+      {{element.datereg | date:'HH:mm' }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { Imatch } from '../../interface/match-interface';
@@ -8,6 +8,8 @@ import { MatIconModule, MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule, MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { NextMatch } from '../next-match/next-match';
+import { QrReader } from '../qr-reader/qr-reader';
+import { MatchesQuery } from '../matches-query/matches-query';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +20,8 @@ import { NextMatch } from '../next-match/next-match';
     MatMenuModule,
     NextMatch,
     RouterModule,
+    QrReader,
+    MatchesQuery,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
@@ -33,22 +37,20 @@ export class Dashboard {
   imagePath: string = 'assets/images/logo-piacenza-young.jpeg';
 
   constructor() {
-    effect(() => {
-      this.onListChat();
-    });
-
     effect(async () => {
       const id = await this.auth.getCurrentUserId();
       const { data } = await this.auth.getUserInfo(id as string);
       this.user.set(data);
-      if (this.user().team === null || this.user().team === undefined) {
-        alert('Completa il tuo profilo per continuare');
-        this.router.navigate(['/user-info']);
-      } else {
-        effect(async () => {
-          const { data } = await this.match_service.nextMatch();
-          this.nextMatch.set(data);
-        });
+      if (!this.user().admin && !this.user().reader) {
+        if (this.user().team === null || this.user().team === undefined) {
+          alert('Completa il tuo profilo per continuare');
+          this.router.navigate(['/user-info']);
+        } else {
+          effect(async () => {
+            const { data } = await this.match_service.nextMatch();
+            this.nextMatch.set(data);
+          });
+        }
       }
     });
   }
@@ -57,23 +59,7 @@ export class Dashboard {
     this.auth
       .signOut()
       .then(() => {
-        this.router.navigate(['/']);
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
-  }
-
-  onListChat() {
-    this.match_service
-      .listMatches()
-      .then((res: Imatch[] | null) => {
-        console.log(res);
-        if (res !== null) {
-          this.matches.set(res);
-        } else {
-          console.log('No matches Found');
-        }
+        this.router.navigate(['/login']);
       })
       .catch((err) => {
         alert(err.message);

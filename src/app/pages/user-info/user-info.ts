@@ -36,6 +36,8 @@ export class UserInfo implements OnInit {
       full_name: [''],
       phone: [''],
       team: [''],
+      isAdmin: [false],
+      isReader: [false],
     });
 
     this.loadTeams();
@@ -49,6 +51,8 @@ export class UserInfo implements OnInit {
       full_name: data?.full_name,
       phone: data?.phone,
       team: data?.team,
+      isAdmin: data?.admin,
+      isReader: data?.reader, 
     });
   }
 
@@ -74,6 +78,6 @@ export class UserInfo implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/login']);
   }
 }

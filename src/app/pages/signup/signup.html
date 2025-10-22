@@ -3,11 +3,16 @@
     <img [src]="imagePath" alt="Logo" class="logo img-fluid" />
   </div>
 
-  <h2 class="d-flex justify-content-center">Registrazione</h2>
+  <h2 class="d-flex justify-content-center">Registrazione Utente</h2>
   <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="form-container">
     <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nominativo</mat-label>
+      <input matInput formControlName="full_name" type="text" />
+    </mat-form-field>    
+    
+    <mat-form-field appearance="outline" class="full-width">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="tel" />
+      <input matInput formControlName="email" type="email" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
@@ -37,6 +42,6 @@
   </form>
 
   <p class="d-flex justify-content-center">
-    <a [routerLink]="['/login']">Ti sei già registrato? vai alla Pagina Iniziale</a>
+    <a (click)="navigateToLogin()">Ti sei già registrato? vai alla Pagina Iniziale</a>
   </p>
 </div>

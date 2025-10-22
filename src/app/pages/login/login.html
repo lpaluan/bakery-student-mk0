@@ -3,41 +3,36 @@
     <img [src]="imagePath" alt="Logo" class="logo img-fluid" />
   </div>
 </div>
-<h2 class="d-flex justify-content-center">Bakery Match Login</h2>
-<section class="login-block">
-  <div class="d-flex justify-content-center">
-    <div class="row">
-      <form class="form-container">
-        <input
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          placeholder="Email"
-          required
-        />
-        <input
-          type="password"
-          [(ngModel)]="password"
-          name="password"
-          placeholder="Password"
-          required
-        />
-        <button type="button" (click)="signInWithEmail()">Accedi</button>
+<h2 class="d-flex justify-content-center">Bakery Match App</h2>
+<div class="d-flex justify-content-center">
+  <div class="row">
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="form-container"
+    >
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" />
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="loginForm.invalid"
+      >
+        Accedi
+      </button>
+    </form>
 
-        <p></p>
-        <div class="col-md-12">
-          <a
-            (click)="handleAuth()"
-            class="btn btn-lg btn-google btn-block text-uppercase btn-outline"
-            href="#"
-            ><img
-              src="https://res.cloudinary.com/dz4tt9omp/image/upload/v1712537582/google-logo.png"
-            />
-            Accedi con Google</a
-          >
-        </div>
-      </form>
-      <p>Non ti sei ancora registrato? <a (click)="navigateToSignup()">Clicca</a></p>
-    </div>
+    <p class="d-flex justify-content-center">
+      <a (click)="navigateToSignup()">
+        Non ti sei ancora registrato? Clicca qui!</a
+      >
+    </p>
   </div>
-</section>
+</div>

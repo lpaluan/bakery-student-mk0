@@ -30,29 +30,60 @@ export class MatchService {
   }
 
   async listMatches() {
-    try {
-      const { data, error } = await this.supabase.from('matches').select();
+    const { data, error } = await this.supabase
+      .from('matches_attended')
+      .select(
+        '*, users(full_name, email, teams(name)), matches(matchdatetime, opponent)'
+      )
+      .order('matches(matchdatetime)', { ascending: true });
 
-      if (error) {
-        alert(error.message);
-      }
-
-      return data;
-    } catch (error) {
+    if (error) {
+      alert(error.message);
       throw error;
     }
+
+    return data;
   }
 
-  async nextMatch() {
-      const now = new Date();
-      now.setHours(0,0,0,0);
-      const data = this.supabase
+  nextMatch() {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    const data = this.supabase
       .from('matches')
       .select('*')
       .gte('matchdatetime', now.toISOString())
       .order('matchdatetime', { ascending: true })
+      .limit(1)
       .single();
-      return data;
+    return data;
   }
 
+  lastMatch() {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    const data = this.supabase
+      .from('matches')
+      .select('*')
+      .lte('matchdatetime', now.toISOString())
+      .order('matchdatetime', { ascending: false })
+      .limit(1)
+      .single();
+    return data;
+  }
+
+  async insertMatchAttendance(user_id: string, match_id: string) {
+    const testData = {
+      user_id: user_id,
+      match_id: match_id,
+    };
+    const { data, error } = await this.supabase
+      .from('matches_attended')
+      .insert(testData);
+    return error;
+  }
+
+    getMatches() {
+    const data = this.supabase.from('matches').select('*').order('matchdatetime', { ascending: true });
+    return data;
+  }
 }

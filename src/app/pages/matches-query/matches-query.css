@@ -1,0 +1,23 @@
+.bordered-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bordered-table th,
+.bordered-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.mat-select-panel {
+  width: 300px !important;
+  background-color: #f3f4f6;
+  color: #374151;
+  border-radius: 8px;
+}
+
+.mat-select-content {
+  background-color: #f3f4f6;
+  color: #374151;
+  border-radius: 8px;
+}

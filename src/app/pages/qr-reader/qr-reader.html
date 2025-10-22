@@ -1,13 +1,32 @@
-
-<h2>QR Code Reader</h2>
-
-<!-- Live Camera Scanner -->
- <div class="d-flex justify-content-center">
-    <ngx-scanner-qrcode (event)="onScan($event)"></ngx-scanner-qrcode>
+<div class="container">
+  <div style="text-align: center; margin-top: 20px">
+    <h2>Controllo Ingresso</h2>
   </div>
 
-<!-- Display scanned result -->
-<div *ngIf="scannedData">
-  <h3>Scanned Data:</h3>
-  <pre>{{ scannedData | json }}</pre>
+  <div class="d-flex justify-content-center">
+    <ngx-scanner-qrcode
+      #action="scanner"
+      [constraints]="{ audio: false,  
+      video: {
+          auto: true,
+          facingMode: 'environment',
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+          frameRate: { ideal: 30 }
+  }
+ }"
+      (event)="onScan($event)"
+    >
+    </ngx-scanner-qrcode>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <button (click)="switchCamera()">Switch Camera</button>
+  </div>
+  <div class="d-flex justify-content-center">
+    <div>
+      <p>Ultima lettura:</p>
+    </div>
+    <p>{{ lastMessage }}</p>
+  </div>
 </div>
