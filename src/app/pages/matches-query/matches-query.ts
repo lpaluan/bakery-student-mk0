@@ -70,6 +70,7 @@ export class MatchesQuery implements OnInit {
    async loadLastMatch() {
     const { data } = await this.match_service.lastMatch();
     this.selectedMatch = data.id;
+    this.dataSource.filter = this.selectedMatch.trim().toLowerCase();
   }
 
   applyFilter(event: Event) {
