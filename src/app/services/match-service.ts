@@ -28,7 +28,6 @@ export class MatchService {
       alert(error);
     }
   }
-
   async listMatches() {
     const { data, error } = await this.supabase
       .from('matches_attended')
@@ -36,6 +35,20 @@ export class MatchService {
         '*, users(full_name, email, teams(name)), matches(matchdatetime, opponent)'
       )
       .order('matches(matchdatetime)', { ascending: true });
+
+    if (error) {
+      alert(error.message);
+      throw error;
+    }
+
+    return data;
+  }
+
+  async listMatchesTeam() {
+    const { data, error } = await this.supabase
+      .from('matches_attendedbyteam')
+      .select('*')
+      .order('order', { ascending: true });
 
     if (error) {
       alert(error.message);
@@ -82,8 +95,11 @@ export class MatchService {
     return error;
   }
 
-    getMatches() {
-    const data = this.supabase.from('matches').select('*').order('matchdatetime', { ascending: true });
+  getMatches() {
+    const data = this.supabase
+      .from('matches')
+      .select('*')
+      .order('matchdatetime', { ascending: true });
     return data;
   }
 }

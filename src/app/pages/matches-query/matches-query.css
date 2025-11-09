@@ -9,15 +9,16 @@
   padding: 8px;
 }
 
-.mat-select-panel {
-  width: 300px !important;
-  background-color: #f3f4f6;
-  color: #374151;
-  border-radius: 8px;
-}
-
-.mat-select-content {
-  background-color: #f3f4f6;
-  color: #374151;
-  border-radius: 8px;
+.navigation {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  span {
+    white-space: nowrap;
+  }
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 16px;
+  .title-main {
+    flex-grow: 1;
+  }
 }
