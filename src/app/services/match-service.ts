@@ -73,7 +73,7 @@ export class MatchService {
 
   lastMatch() {
     const now = new Date();
-    now.setHours(0, 0, 0, 0);
+    now.setHours(23, 59, 59, 0);
     const data = this.supabase
       .from('matches')
       .select('*')

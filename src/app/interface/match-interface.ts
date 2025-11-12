@@ -6,3 +6,17 @@ export interface Imatch {
   opponent: string;
   matchdatetime: string;
 }
+
+export interface IteamMatchGrouped {
+  team: string;
+  opponent: string;
+  matchmonth: string;
+  presencecount: number;
+}
+
+export interface IteamMatchMonthGrouped {
+  team: string;
+  matchmonth: string;
+  presencecount: number;
+  matches: IteamMatchGrouped[];
+}

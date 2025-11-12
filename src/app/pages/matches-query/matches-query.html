@@ -83,6 +83,11 @@
     <td mat-cell *matCellDef="let element">{{element.team}}</td>
   </ng-container>
 
+  <ng-container matColumnDef="month">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Mese</th>
+    <td mat-cell *matCellDef="let element">{{element.month}}</td>
+  </ng-container>
+
   <ng-container matColumnDef="count_users">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Presenze</th>
     <td mat-cell *matCellDef="let element">{{element.count_users}}</td>

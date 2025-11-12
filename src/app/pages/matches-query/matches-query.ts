@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { IteamMatchGrouped, IteamMatchMonthGrouped } from '../../interface/match-interface';
 
 @Component({
   selector: 'app-matches-query',
@@ -48,7 +49,7 @@ export class MatchesQuery implements OnInit {
   selectedMatch: string = '';
 
   // Team columns
-  tdc: string[] = ['team', 'count_users'];
+  tdc: string[] = ['team', 'month', 'count_users'];
   tds = new MatTableDataSource<any>();
 
   @ViewChild('matchTbSort') sort = new MatSort();
@@ -70,13 +71,29 @@ export class MatchesQuery implements OnInit {
     this.dataSource.sort = this.sort;
 
     const tdata = await this.match_service.listMatchesTeam();
-    const tformated = tdata.map((team: any) => ({
+    const grouped = this.groupData(tdata);
+    const tformated = grouped.map((team: any) => ({
       team: team.team,
-      count_users: team.count_users,
+      month: team.matchmonth,
+      count_users: team.presencecount,
     }));
     this.tds.data = tformated;
     this.tds.sort = this.teamSort;
     this.loadMatches();
+  }
+
+  groupData(data: any[]): IteamMatchMonthGrouped[] {
+    const map = new Map<string, IteamMatchMonthGrouped>();
+    data.forEach(item => {
+      if (!map.has(item.team.concat(item.year_month))) {
+        map.set(item.team.concat(item.year_month), { team: item.team, matchmonth: item.year_month, presencecount: 0, matches: [] });
+      }
+      const group = map.get(item.team.concat(item.year_month))!;
+      group.presencecount += item.count_users;
+      group.matchmonth = item.year_month;
+      group.matches.push(item);
+    });
+    return Array.from(map.values());
   }
 
   async loadMatches() {
